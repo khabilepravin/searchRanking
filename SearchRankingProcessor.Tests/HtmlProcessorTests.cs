@@ -1,20 +1,21 @@
 using FluentAssertions;
+using SearchRankingHtmlProcessor;
 using System;
 using System.Net.Http;
 using Xunit;
 
-namespace SearchRankingHtmlProcessor.Tests
+namespace SearchRankingProcessor.Tests
 {
-    public class ProcessSearchRankingHtmlTests
+    public class HtmlProcessorTests
     {
         [Fact]
-        public void FetchSearchResults_WithInvalidHtml_ThrowsArgumentException()
+        public void FetchUrlsFromSearchResult_WithInvalidHtml_ThrowsArgumentException()
         {
             // arrange
-            var processSearchRanking = new ProcessSearchRankingHtml();
+            var processSearchRanking = new HtmlProcessor();
 
             // act
-            Action act = () => processSearchRanking.FetchSearchResults(null);
+            Action act = () => processSearchRanking.FetchUrlsFromSearchResult(null);
 
             // assert
             act.Should().Throw<ArgumentException>()
@@ -22,16 +23,16 @@ namespace SearchRankingHtmlProcessor.Tests
         }
 
         [Fact]
-        public async void FetchSearchResults_WithValidHtml_ReturnsNonEmptyList()
+        public async void FetchUrlsFromSearchResult_WithValidHtml_ReturnsNonEmptyList()
         {
             // arrange
-            var processSearchRanking = new ProcessSearchRankingHtml();            
+            var processSearchRanking = new HtmlProcessor();            
             var httpClient = new HttpClient();
             var request = await httpClient.GetAsync("https://www.google.com.au/search?num=100&q=conveyancing+software");
             var response = await request.Content.ReadAsStringAsync();            
 
             // act
-            var result = processSearchRanking.FetchSearchResults(response);
+            var result = processSearchRanking.FetchUrlsFromSearchResult(response);
 
             // assert
             result.Should().NotBeEmpty();

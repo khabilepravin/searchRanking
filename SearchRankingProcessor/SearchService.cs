@@ -1,16 +1,30 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using Microsoft.Extensions.Options;
+using Models;
+using System;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace SearchRankingProcessor
 {
     public class SearchService : ISearchService
     {
-        public string Search(string searchCriteria)
+        private readonly SearchSettings _searchSettings;
+        public SearchService(IOptions<SearchSettings> searchOptions)
         {
-            throw new NotImplementedException();
+            _searchSettings = searchOptions.Value;
+        }
+
+        public async Task<string> Search(string searchTerm)
+        {
+            if(_searchSettings.SearchLimit <= 0) { throw new ArgumentException("Invalid SearchLimit"); }
+            if(string.IsNullOrWhiteSpace(_searchSettings.SearchUrl) || Uri.IsWellFormedUriString(_searchSettings.SearchUrl, UriKind.Absolute) == false) { throw new ArgumentException("Invalid SearchUrl"); }
+            if (string.IsNullOrWhiteSpace(searchTerm)) { throw new ArgumentException("Invalid searchTerm"); }
+
+            var requestUrl = $"{_searchSettings.SearchUrl}search?num={_searchSettings.SearchLimit}&q={searchTerm}";
+            var httpClient = new HttpClient();
+            var request = await httpClient.GetAsync(requestUrl);
+         
+            return await request.Content.ReadAsStringAsync();
         }
     }
 }

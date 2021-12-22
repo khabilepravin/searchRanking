@@ -1,25 +1,25 @@
-﻿using Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Xml;
 using System.Linq;
+using System.Xml;
 
 namespace SearchRankingHtmlProcessor
 {
-    public class ProcessSearchRankingHtml : IProcessSearchRankingHtml
+    public class HtmlProcessor : IHtmlProcessor
     {
-        public IEnumerable<SearchRankingResult> FetchSearchResults(string cleanerInputHtml)
+        public List<Uri> FetchUrlsFromSearchResult(string inputHtml)
         {
-            if (string.IsNullOrWhiteSpace(cleanerInputHtml))
+            if (string.IsNullOrWhiteSpace(inputHtml))
             {
                 throw new ArgumentException("Invalid html input");
             }
 
-            var searchResultUrls = FindSearchResultUrls(cleanerInputHtml);
-            var searchRankings = BuildRankings(searchResultUrls);
-            return searchRankings;
+            var searchResultUrls = FindSearchResultUrls(inputHtml);
+           
+            return searchResultUrls;
         }
 
+        // Instead of building a sophisticated html parser, just simply using string lookup for a specific url types in html
         private List<Uri> FindSearchResultUrls(string inputHtml)
         {
             List<Uri> searchResultUrlElements = null;
@@ -44,9 +44,13 @@ namespace SearchRankingHtmlProcessor
                         var hyperLink = doc.DocumentElement.Attributes[0];
                         var uri = new Uri(hyperLink.Value.Replace(TagNames.UrlPrefix, string.Empty));
 
-                        var existingUrlDomain = (from result in searchResultUrlElements
-                                                 where result.Host == uri.Host
-                                                 select result).FirstOrDefault<Uri>();
+                        Uri existingUrlDomain = null;
+                        if (searchResultUrlElements != null)
+                        {
+                            existingUrlDomain = (from result in searchResultUrlElements
+                                                     where result.Host == uri.Host
+                                                     select result).FirstOrDefault<Uri>();
+                        }
 
                         if (existingUrlDomain == null)
                         {
@@ -60,16 +64,7 @@ namespace SearchRankingHtmlProcessor
             }
 
             return searchResultUrlElements;
-        }
+        }        
         
-        private IEnumerable<SearchRankingResult> BuildRankings(List<Uri> searchResultUrls)
-        {
-            return from url in searchResultUrls
-                   select new SearchRankingResult
-                   {
-                       Host = url.Host,
-                       Ranking = searchResultUrls.IndexOf(url)
-                   };
-        }
     }
 }

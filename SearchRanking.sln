@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31702.278
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.32014.148
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Models", "Models\Models.csproj", "{099E3651-9CA2-4816-A96E-3B12BC413E7C}"
 EndProject
@@ -10,6 +10,12 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SearchRankingProcessor", "SearchRankingProcessor\SearchRankingProcessor.csproj", "{2ED01340-14B8-4CC8-A20E-A6037CBC9E99}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SearchRankingProcessor.Tests", "SearchRankingProcessor.Tests\SearchRankingProcessor.Tests.csproj", "{5F7D0875-4E44-4523-B689-13B01373A786}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "API", "API", "{AC8E0B86-668B-40BC-91E8-9A5379789842}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Client.Desktop", "Client.Desktop", "{2A22EE9A-18BF-466C-9331-A2EF43A588C7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Client.Web", "Client.Web", "{152BE96F-EFDD-4D13-AE1A-AFE4EC97B80B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -36,6 +42,12 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{099E3651-9CA2-4816-A96E-3B12BC413E7C} = {AC8E0B86-668B-40BC-91E8-9A5379789842}
+		{ECBCBF7F-711D-4D80-AE9F-ECFCCAEB5D02} = {AC8E0B86-668B-40BC-91E8-9A5379789842}
+		{2ED01340-14B8-4CC8-A20E-A6037CBC9E99} = {AC8E0B86-668B-40BC-91E8-9A5379789842}
+		{5F7D0875-4E44-4523-B689-13B01373A786} = {AC8E0B86-668B-40BC-91E8-9A5379789842}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5FE5AA75-E85E-4D31-9614-7D37B900A781}
