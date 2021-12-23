@@ -1,6 +1,7 @@
 ﻿using APIProxy;
 using Prism.Commands;
 using Prism.Mvvm;
+using System.Windows;
 
 namespace SearchRankingApp.ViewModels
 {
@@ -43,10 +44,15 @@ namespace SearchRankingApp.ViewModels
         public string CurrentRanking
         {
             get => currentRanking;
-            set
-            {
-                SetProperty<string>(ref currentRanking, value);
-            }
+            set => SetProperty<string>(ref currentRanking, value);
+        }
+
+        private Visibility fetchingResultVisibility = Visibility.Collapsed;
+
+        public Visibility FetchingResultVisibility
+        {
+            get => fetchingResultVisibility;
+            set => SetProperty<Visibility>(ref fetchingResultVisibility, value);
         }
 
         private DelegateCommand fetchRankingResultsCommand = null;
@@ -54,12 +60,15 @@ namespace SearchRankingApp.ViewModels
 
         private async void FetchRankingResultsCommandExeucte()
         {
-            //System.Windows.MessageBox.Show("Command fired");
+            FetchingResultVisibility = Visibility.Visible;
+            
             var result = await _searchRankingAPIProxy.GetAllRankingResults(searchTerm);
 
             var rankingResult = await _searchRankingAPIProxy.GetRankingResultByHost(Domain, SearchTerm);
 
             CurrentRanking = $"{Domain} current search result ranking for `{searchTerm}` is {rankingResult.Ranking}";
+
+            FetchingResultVisibility = Visibility.Collapsed;
         }
 
         private bool FetchRankingResultsCommandCanExeucte()

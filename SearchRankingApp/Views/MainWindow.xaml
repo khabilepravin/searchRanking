@@ -39,9 +39,20 @@
                         Badge="{materialDesign:PackIcon Search}"
                         BadgeColorZoneMode="Dark">
             <Button Content="Get Ranking" 
-                    Command="{Binding FetchRankingResultsCommand}"/>
+                    Command="{Binding FetchRankingResultsCommand}">
+                <Button.Style>
+                    <Style TargetType="{x:Type Button}" BasedOn="{StaticResource MaterialDesignFlatDarkButton}">
+                        <Setter Property="IsEnabled" Value="True"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding FetchingResultVisibility}" Value="Visible">
+                                <Setter Property="IsEnabled" Value="False"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
         </materialDesign:Badged>
-        
+
         <TabControl Grid.Row="3" Margin="5"
                     materialDesign:ColorZoneAssist.Mode="PrimaryMid"
                     materialDesign:NavigationRailAssist.SelectionCornerRadius="50 10 10 10"
@@ -59,7 +70,29 @@
                         <TextBlock HorizontalAlignment="Center" Text="Ranking" />
                     </StackPanel>
                 </TabItem.Header>
-                <TextBlock FontSize="25" FontWeight="Bold" Text="{Binding CurrentRanking}"/>
+                <Grid>
+                    <TextBlock FontSize="25" FontWeight="Bold" Text="{Binding CurrentRanking}">
+                        <TextBlock.Style>
+                            <Style TargetType="{x:Type TextBlock}">
+                                <Setter Property="Visibility" Value="Visible"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding FetchingResultVisibility}" Value="Visible">
+                                        <Setter Property="Visibility" Value="Collapsed"/>                                        
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
+                    <ProgressBar
+                        Visibility="{Binding FetchingResultVisibility}"
+                        IsIndeterminate="True" />
+                    <!--<ProgressBar
+                      Style="{StaticResource MaterialDesignCircularProgressBar}"
+                      Value="0"
+                        FontSize="50"
+                      Visibility="{Binding FetchingResultVisibility}"
+                      IsIndeterminate="True" />-->
+                </Grid>
             </TabItem>
 
             <TabItem>
