@@ -21,6 +21,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SearchRankingAPI.Integratio
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SearchRankingApp", "SearchRankingApp\SearchRankingApp.csproj", "{81AC2A3A-E33A-4DE1-A94A-6802BAA740FF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "APIProxy", "APIProxy\APIProxy.csproj", "{3C383B27-3165-4FA3-AC91-F28547A43773}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +53,10 @@ Global
 		{81AC2A3A-E33A-4DE1-A94A-6802BAA740FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{81AC2A3A-E33A-4DE1-A94A-6802BAA740FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{81AC2A3A-E33A-4DE1-A94A-6802BAA740FF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3C383B27-3165-4FA3-AC91-F28547A43773}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3C383B27-3165-4FA3-AC91-F28547A43773}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3C383B27-3165-4FA3-AC91-F28547A43773}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3C383B27-3165-4FA3-AC91-F28547A43773}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -62,6 +68,7 @@ Global
 		{5F7D0875-4E44-4523-B689-13B01373A786} = {AC8E0B86-668B-40BC-91E8-9A5379789842}
 		{6647A294-F672-4C06-A703-79D66D77E754} = {AC8E0B86-668B-40BC-91E8-9A5379789842}
 		{81AC2A3A-E33A-4DE1-A94A-6802BAA740FF} = {2A22EE9A-18BF-466C-9331-A2EF43A588C7}
+		{3C383B27-3165-4FA3-AC91-F28547A43773} = {2A22EE9A-18BF-466C-9331-A2EF43A588C7}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5FE5AA75-E85E-4D31-9614-7D37B900A781}

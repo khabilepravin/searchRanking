@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace SearchRankingApp
+namespace SearchRankingApp.Views
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml

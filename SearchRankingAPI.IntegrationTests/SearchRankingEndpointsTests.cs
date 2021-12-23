@@ -57,5 +57,33 @@ namespace SearchRankingAPI.IntegrationTests
             // assert          
             response.StatusCode.Should().Be(HttpStatusCode.NotFound);
         }
+
+        [Fact]
+        public async void GetRankingAll_WithValidInputs_ReturnsRanking()
+        {
+            // arrange
+            var client = new TestClientProvider().Client;
+
+            // act
+            var response = await client.GetAsync("/api/searchranking/all?searchTerm=conveyancing software");
+
+            // assert   
+            response.StatusCode.Should().Be(HttpStatusCode.OK);
+        }
+
+       
+
+        [Fact]
+        public async void GetRankingAll_WithInValidSearchTerm_ReturnsBadRequest()
+        {
+            // arrange
+            var client = new TestClientProvider().Client;
+
+            // act
+            var response = await client.GetAsync("/api/searchranking/all?searchTerm=");
+
+            // assert          
+            response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+        }
     }
 }

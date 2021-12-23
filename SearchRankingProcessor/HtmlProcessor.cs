@@ -42,20 +42,25 @@ namespace SearchRankingHtmlProcessor
                     if (doc.DocumentElement.Attributes?.Count > 0)
                     {
                         var hyperLink = doc.DocumentElement.Attributes[0];
-                        var uri = new Uri(hyperLink.Value.Replace(TagNames.UrlPrefix, string.Empty));
+                        var urlValue = hyperLink.Value.Replace(TagNames.UrlPrefix, string.Empty);
 
-                        Uri existingUrlDomain = null;
-                        if (searchResultUrlElements != null)
+                        if (Uri.IsWellFormedUriString(urlValue, UriKind.Absolute))
                         {
-                            existingUrlDomain = (from result in searchResultUrlElements
+                            var uri = new Uri(urlValue);
+
+                            Uri existingUrlDomain = null;
+                            if (searchResultUrlElements != null)
+                            {
+                                existingUrlDomain = (from result in searchResultUrlElements
                                                      where result.Host == uri.Host
                                                      select result).FirstOrDefault<Uri>();
-                        }
+                            }
 
-                        if (existingUrlDomain == null)
-                        {
-                            if(searchResultUrlElements == null) { searchResultUrlElements = new List<Uri>(); }
-                            searchResultUrlElements.Add(uri);
+                            if (existingUrlDomain == null)
+                            {
+                                if (searchResultUrlElements == null) { searchResultUrlElements = new List<Uri>(); }
+                                searchResultUrlElements.Add(uri);
+                            }
                         }
                     }
                 }
