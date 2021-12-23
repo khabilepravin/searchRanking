@@ -13,10 +13,17 @@ namespace SearchRankingHtmlProcessor
             {
                 throw new ArgumentException("Invalid html input");
             }
+            else 
+            { 
+                if(inputHtml.IndexOf("Our systems have detected unusual traffic from your computer", StringComparison.InvariantCultureIgnoreCase) >= 0)
+                {
+                    throw new InvalidOperationException("Search engine blocked the request");
+                }
 
-            var searchResultUrls = FindSearchResultUrls(inputHtml);
-           
-            return searchResultUrls;
+                var searchResultUrls = FindSearchResultUrls(inputHtml);
+
+                return searchResultUrls;
+            }
         }
 
         // Instead of building a sophisticated html parser, just simply using string lookup for a specific url types in html

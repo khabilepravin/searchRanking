@@ -46,12 +46,20 @@ namespace SearchRankingProcessor
 
         private IEnumerable<SearchRankingResult> BuildRankings(List<Uri> searchResultUrls)
         {
-            return from url in searchResultUrls
-                   select new SearchRankingResult
-                   {
-                       Host = url.Host,
-                       Ranking = searchResultUrls.IndexOf(url)
-                   };
+            if(searchResultUrls != null)
+            {
+                return from url in searchResultUrls
+                       select new SearchRankingResult
+                       {
+                           Host = url.Host,
+                           Ranking = searchResultUrls.IndexOf(url)
+                       };
+            }
+            else
+            {
+                return null;
+            }
+            
         }
     }
 }
