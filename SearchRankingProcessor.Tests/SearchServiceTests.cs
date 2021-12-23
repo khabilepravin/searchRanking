@@ -1,7 +1,5 @@
 ﻿using FluentAssertions;
-using Microsoft.Extensions.Options;
 using Models;
-using Moq;
 using System;
 using System.Threading.Tasks;
 using Xunit;
@@ -9,13 +7,12 @@ using Xunit;
 namespace SearchRankingProcessor.Tests
 {
     public class SearchServiceTests
-    {
-        
+    {        
         [Fact]
         public async void Search_WithInvalidUrl_ThrowsArgumentException()
         {
             // arrange            
-            var searchService = new SearchService(Options.Create<SearchSettings>(new SearchSettings { SearchLimit = 100, SearchUrl = "google" }));
+            var searchService = new SearchService(new SearchSettings { SearchLimit = 100, SearchUrl = "google" });
 
             // act
             Func<Task> act = async () => await searchService.Search("conveyancing");
@@ -29,7 +26,7 @@ namespace SearchRankingProcessor.Tests
         public async void Search_WithInvalidLimit_ThrowsArgumentException()
         {
             // arrange
-            var searchService = new SearchService(Options.Create<SearchSettings>(new SearchSettings { SearchLimit = 0, SearchUrl = "https://www.google.com.au/" }));
+            var searchService = new SearchService(new SearchSettings { SearchLimit = 0, SearchUrl = "https://www.google.com.au/" });
 
             // act
             Func<Task> act = async () => await searchService.Search("conveyancing");
@@ -43,7 +40,7 @@ namespace SearchRankingProcessor.Tests
         public async void Search_WithInvalidSearchTerm_ThrowsArgumentException()
         {
             // arrange
-            var searchService = new SearchService(Options.Create<SearchSettings>(new SearchSettings { SearchLimit = 100, SearchUrl = "https://www.google.com.au/" }));
+            var searchService = new SearchService(new SearchSettings { SearchLimit = 100, SearchUrl = "https://www.google.com.au/" });
 
             // act
             Func<Task> act = async () => await searchService.Search("");
@@ -57,7 +54,7 @@ namespace SearchRankingProcessor.Tests
         public async void Search_WithValidSearchTerm_ReturnsNonEmptyString()
         {
             // arrange
-            var searchService = new SearchService(Options.Create<SearchSettings>(new SearchSettings { SearchLimit = 100, SearchUrl = "https://www.google.com.au/" }));
+            var searchService = new SearchService(new SearchSettings { SearchLimit = 100, SearchUrl = "https://www.google.com.au/" });
 
             // act
             var result = await searchService.Search("conveyancing");

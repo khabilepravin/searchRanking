@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.Options;
-using Models;
+﻿using Models;
 using System;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -9,9 +8,9 @@ namespace SearchRankingProcessor
     public class SearchService : ISearchService
     {
         private readonly SearchSettings _searchSettings;
-        public SearchService(IOptions<SearchSettings> searchOptions)
+        public SearchService(SearchSettings searchSettings)
         {
-            _searchSettings = searchOptions.Value;
+            _searchSettings = searchSettings;
         }
 
         public async Task<string> Search(string searchTerm)

@@ -9,11 +9,14 @@ using System;
 using Polly;
 using System.Net.Http;
 using Polly.Extensions.Http;
+using SearchRankingHtmlProcessor;
+using Microsoft.Extensions.Options;
+using Models;
 
 namespace SearchRankingAPI
 {
     public class Startup
-    {
+    {        
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -25,17 +28,22 @@ namespace SearchRankingAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddOptions();
-            services.Configure<SearchSettings>(Configuration.GetSection("SearchSettings"));
+            services.Configure<SearchSettings>(Configuration.GetSection("SearchSettings"))
+                .AddSingleton<SearchSettings>(searchSetting => searchSetting.GetRequiredService<IOptions<SearchSettings>>().Value);
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "SearchRankingAPI", Version = "v1" });
             });
+            
+            services.AddSingleton<ISearchRankingService, SearchRankingService>();
+            services.AddSingleton<ISearchService, SearchService>();
+            services.AddSingleton<IHtmlProcessor, HtmlProcessor>();
 
-            services.AddHttpClient<ISearchService, SearchService>()
-                .SetHandlerLifetime(TimeSpan.FromMinutes(5))
-                .AddPolicyHandler(GetRetryPolicy());
+            //services.AddHttpClient<ISearchService, SearchService>()
+            // .SetHandlerLifetime(TimeSpan.FromMinutes(5))
+            // .AddPolicyHandler(GetRetryPolicy());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

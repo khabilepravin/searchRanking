@@ -1,5 +1,4 @@
 ﻿using FluentAssertions;
-using Microsoft.Extensions.Options;
 using Models;
 using SearchRankingHtmlProcessor;
 using System;
@@ -10,18 +9,18 @@ namespace SearchRankingProcessor.Tests
 {
     public class SearchRankingServiceTests
     {
-        IOptions<SearchSettings> _searchSettingsOptions;
+        SearchSettings _searchSettings;
         
         public SearchRankingServiceTests()
         {
-            _searchSettingsOptions = Options.Create<SearchSettings>(new SearchSettings { SearchLimit = 100, SearchUrl = "https://www.google.com.au/" });
+            _searchSettings = new SearchSettings { SearchLimit = 100, SearchUrl = "https://www.google.com.au/" };
         }
 
         [Fact]
         public async void GetSearchRanking_WithValidParams_ReturnsRankingResult()
         {
             // arrange            
-            var searchService = new SearchService(_searchSettingsOptions);
+            var searchService = new SearchService(_searchSettings);
             var htmlProcessor = new HtmlProcessor();
 
             var searchRankingService = new SearchRankingService(searchService, htmlProcessor);
@@ -37,7 +36,7 @@ namespace SearchRankingProcessor.Tests
         public async void GetSearchRanking_WithInvalidHost_ThrowsArgumentException()
         {
             // arrange            
-            var searchService = new SearchService(_searchSettingsOptions);
+            var searchService = new SearchService(_searchSettings);
             var htmlProcessor = new HtmlProcessor();
 
             var searchRankingService = new SearchRankingService(searchService, htmlProcessor);
@@ -54,7 +53,7 @@ namespace SearchRankingProcessor.Tests
         public async void GetSearchRanking_WithInvalidSearchTerm_ThrowsArgumentException()
         {
             // arrange            
-            var searchService = new SearchService(_searchSettingsOptions);
+            var searchService = new SearchService(_searchSettings);
             var htmlProcessor = new HtmlProcessor();
 
             var searchRankingService = new SearchRankingService(searchService, htmlProcessor);
@@ -71,7 +70,7 @@ namespace SearchRankingProcessor.Tests
         public async void GetAllSearchRankingResults_WithValidParams_ReturnsRankingResult()
         {
             // arrange            
-            var searchService = new SearchService(_searchSettingsOptions);
+            var searchService = new SearchService(_searchSettings);
             var htmlProcessor = new HtmlProcessor();
 
             var searchRankingService = new SearchRankingService(searchService, htmlProcessor);
@@ -87,7 +86,7 @@ namespace SearchRankingProcessor.Tests
         public async void GetAllSearchRankingResults_WithInvalidSearchTerm_ThrowsArgumentException()
         {
             // arrange            
-            var searchService = new SearchService(_searchSettingsOptions);
+            var searchService = new SearchService(_searchSettings);
             var htmlProcessor = new HtmlProcessor();
 
             var searchRankingService = new SearchRankingService(searchService, htmlProcessor);
