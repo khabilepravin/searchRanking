@@ -36,12 +36,12 @@
                  Text="{Binding SearchTerm, UpdateSourceTrigger=PropertyChanged}"/>
 
         <materialDesign:Badged Grid.Row="2" Margin="5"
-                        Badge="{materialDesign:PackIcon Search}"
+                        Badge="{materialDesign:PackIcon FeatureSearchOutline}"
                         BadgeColorZoneMode="Dark">
             <Button Content="Get Ranking" 
                     Command="{Binding FetchRankingResultsCommand}">
                 <Button.Style>
-                    <Style TargetType="{x:Type Button}" BasedOn="{StaticResource MaterialDesignFlatDarkButton}">
+                    <Style TargetType="{x:Type Button}" BasedOn="{StaticResource MaterialDesignRaisedDarkButton}">
                         <Setter Property="IsEnabled" Value="True"/>
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding FetchingResultVisibility}" Value="Visible">
@@ -52,13 +52,12 @@
                 </Button.Style>
             </Button>
         </materialDesign:Badged>
-
         <TabControl Grid.Row="3" Margin="5"
                     materialDesign:ColorZoneAssist.Mode="PrimaryMid"
                     materialDesign:NavigationRailAssist.SelectionCornerRadius="50 10 10 10"
                     materialDesign:NavigationRailAssist.ShowSelectionBackground="True"
                     Style="{StaticResource MaterialDesignNavigatilRailTabControl}"
-                    TabStripPlacement="Top">
+                    TabStripPlacement="Top">          
             <TabItem>
                 <TabItem.Header>
                     <StackPanel Width="auto" Height="auto">
@@ -66,18 +65,18 @@
                                     Width="24"
                                     Height="24"
                                     HorizontalAlignment="Center"
-                                    Kind="Number0" />
+                                    Kind="FormatListNumbered" />
                         <TextBlock HorizontalAlignment="Center" Text="Ranking" />
                     </StackPanel>
                 </TabItem.Header>
                 <Grid>
-                    <TextBlock FontSize="25" FontWeight="Bold" Text="{Binding CurrentRanking}">
+                    <TextBlock FontSize="25" FontWeight="Bold" Text="{Binding CurrentRanking}" Margin="0,10,0,0">
                         <TextBlock.Style>
                             <Style TargetType="{x:Type TextBlock}">
                                 <Setter Property="Visibility" Value="Visible"/>
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding FetchingResultVisibility}" Value="Visible">
-                                        <Setter Property="Visibility" Value="Collapsed"/>                                        
+                                        <Setter Property="Visibility" Value="Collapsed"/>
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
@@ -86,15 +85,8 @@
                     <ProgressBar
                         Visibility="{Binding FetchingResultVisibility}"
                         IsIndeterminate="True" />
-                    <!--<ProgressBar
-                      Style="{StaticResource MaterialDesignCircularProgressBar}"
-                      Value="0"
-                        FontSize="50"
-                      Visibility="{Binding FetchingResultVisibility}"
-                      IsIndeterminate="True" />-->
                 </Grid>
             </TabItem>
-
             <TabItem>
                 <TabItem.Header>
                     <StackPanel Width="auto" Height="auto">
@@ -106,14 +98,20 @@
                         <TextBlock HorizontalAlignment="Center" Text="All" />
                     </StackPanel>
                 </TabItem.Header>
-                <TextBlock>
-                            <Run Text="tab 2 content. Default look and behaviors." />
-                            <LineBreak />
-                            <LineBreak />
-                            <Run FontStyle="Italic">
-                                Praesent sed dui arcu. Vivamus porta auctor sagittis
-                            </Run>
-                </TextBlock>
+                <ListView ItemsSource="{Binding AllRankings}">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Button Style="{StaticResource MaterialDesignFloatingActionMiniSecondaryButton}" Content="{Binding Ranking}"/>
+                                    <TextBlock Text="{Binding Host}" Grid.Column="1" Margin="20,0,0,0" FontSize="20" VerticalAlignment="Center"/>
+                                </Grid>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>                                             
+                    </ListView>
             </TabItem>
         </TabControl>
     </Grid>

@@ -1,6 +1,9 @@
 ﻿using APIProxy;
+using APIProxy.ResposeModels;
 using Prism.Commands;
 using Prism.Mvvm;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Windows;
 
 namespace SearchRankingApp.ViewModels
@@ -14,8 +17,7 @@ namespace SearchRankingApp.ViewModels
             _searchRankingAPIProxy = searchRankingAPIProxy;
         }
 
-        private string domain = string.Empty;
-                
+        private string domain = string.Empty;                
         public string Domain
         {
             get => domain;
@@ -27,7 +29,6 @@ namespace SearchRankingApp.ViewModels
         }
 
         private string searchTerm = string.Empty;
-
         public string SearchTerm
         {
             get => searchTerm;
@@ -37,10 +38,8 @@ namespace SearchRankingApp.ViewModels
                 FetchRankingResultsCommand.RaiseCanExecuteChanged();
             }
         }
-
-        
+                
         private string currentRanking = string.Empty;
-
         public string CurrentRanking
         {
             get => currentRanking;
@@ -48,25 +47,33 @@ namespace SearchRankingApp.ViewModels
         }
 
         private Visibility fetchingResultVisibility = Visibility.Collapsed;
-
         public Visibility FetchingResultVisibility
         {
             get => fetchingResultVisibility;
             set => SetProperty<Visibility>(ref fetchingResultVisibility, value);
         }
 
+        private IEnumerable<SearchRankingResult> allRankings = null;
+        public IEnumerable<SearchRankingResult> AllRankings
+        {
+            get => allRankings;
+            set => SetProperty<IEnumerable<SearchRankingResult>>(ref allRankings, value);
+        }
+       
         private DelegateCommand fetchRankingResultsCommand = null;
         public DelegateCommand FetchRankingResultsCommand => fetchRankingResultsCommand ?? (fetchRankingResultsCommand = new DelegateCommand(FetchRankingResultsCommandExeucte, FetchRankingResultsCommandCanExeucte));
 
         private async void FetchRankingResultsCommandExeucte()
         {
             FetchingResultVisibility = Visibility.Visible;
-            
-            var result = await _searchRankingAPIProxy.GetAllRankingResults(searchTerm);
+                        
+            var getRankingByHostTask = _searchRankingAPIProxy.GetRankingResultByHost(Domain, SearchTerm);
+            var getAllRankingsTask = _searchRankingAPIProxy.GetAllRankingResults(searchTerm);
 
-            var rankingResult = await _searchRankingAPIProxy.GetRankingResultByHost(Domain, SearchTerm);
+            await Task.WhenAll(getRankingByHostTask, getAllRankingsTask);
 
-            CurrentRanking = $"{Domain} current search result ranking for `{searchTerm}` is {rankingResult.Ranking}";
+            CurrentRanking = $"{Domain} current search result ranking for `{searchTerm}` is {getRankingByHostTask.Result.Ranking}";
+            AllRankings = getAllRankingsTask.Result;
 
             FetchingResultVisibility = Visibility.Collapsed;
         }
@@ -82,6 +89,5 @@ namespace SearchRankingApp.ViewModels
                 return true;
             }
         }
-
     }
 }
