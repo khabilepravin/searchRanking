@@ -4,6 +4,9 @@ using SearchRankingProcessor;
 using System.Threading.Tasks;
 using System.Linq;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Http;
+using System.Collections.Generic;
+using SearchRankingAPI.Diagnostics;
 
 namespace SearchRankingAPI.Controllers
 {
@@ -20,7 +23,11 @@ namespace SearchRankingAPI.Controllers
             _searchRankingService = searchRankingService;
         }
 
-        [HttpGet]        
+        [HttpGet]     
+        [ProducesResponseType(StatusCodes.Status200OK, Type =typeof(SearchRankingResult))]
+        [ProducesResponseType(StatusCodes.Status404NotFound,Type = typeof(string))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(string))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorDetails))]
         public async Task<ActionResult<SearchRankingResult>> Get([FromQuery]string host, [FromQuery] string searchTerm)
         {
             if (string.IsNullOrWhiteSpace(searchTerm)) { return BadRequest("Invalid searchTerm"); }
@@ -33,12 +40,16 @@ namespace SearchRankingAPI.Controllers
                 _logger.LogWarning("No search results found for {host} with search term {searchTerm}", host, searchTerm);
                 return NotFound($"No search results found for {host} with searchTerm: {searchTerm}"); 
             }
-
+                       
             return Ok(result);
         }
 
         [HttpGet("all")]
-        public async Task<ActionResult<SearchRankingResult>> GetAll([FromQuery] string searchTerm)
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<SearchRankingResult>))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(string))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(string))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorDetails))]
+        public async Task<ActionResult<IEnumerable<SearchRankingResult>>> GetAll([FromQuery] string searchTerm)
         {
             if (string.IsNullOrWhiteSpace(searchTerm)) { return BadRequest("Invalid searchTerm"); }
 
