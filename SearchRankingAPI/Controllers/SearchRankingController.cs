@@ -37,7 +37,7 @@ namespace SearchRankingAPI.Controllers
 
             if (result == null) 
             { 
-                _logger.LogWarning("No search results found for {host} with search term {searchTerm}", host, searchTerm);
+                _logger.LogWarning($"No search results found for {host} with search term {searchTerm}");
                 return NotFound($"No search results found for {host} with searchTerm: {searchTerm}"); 
             }
                        
@@ -57,7 +57,7 @@ namespace SearchRankingAPI.Controllers
 
             if (result?.Any() == false) 
             {
-                _logger.LogWarning("No search results found for searchTerm {searchTerm}", searchTerm);
+                _logger.LogWarning($"No search results found for searchTerm {searchTerm}");
                 return NotFound($"No search results found with searchTerm: {searchTerm}"); 
             }
 
