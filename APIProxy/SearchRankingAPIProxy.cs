@@ -1,11 +1,9 @@
 ﻿using APIProxy.ResposeModels;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using Flurl;
 using Flurl.Http;
-using Flurl.Util;
+using System.Collections.Generic;
 using System.Configuration;
+using System.Threading.Tasks;
 
 namespace APIProxy
 {
@@ -32,7 +30,7 @@ namespace APIProxy
             var result = await $"{_apiBaseUrl}/searchranking"
                            .SetQueryParams(new { host = host, searchTerm = searchTerm })
                            .GetJsonAsync<SearchRankingResult>();
-
+            
             return result;
         }
     }

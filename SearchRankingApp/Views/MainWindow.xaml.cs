@@ -22,7 +22,7 @@ namespace SearchRankingApp.Views
     {
         public MainWindow()
         {
-            InitializeComponent();
+            InitializeComponent();            
         }
     }
 }

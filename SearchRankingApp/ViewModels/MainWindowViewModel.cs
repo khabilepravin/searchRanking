@@ -2,6 +2,8 @@
 using APIProxy.ResposeModels;
 using Prism.Commands;
 using Prism.Mvvm;
+using Serilog;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows;
@@ -65,29 +67,32 @@ namespace SearchRankingApp.ViewModels
 
         private async void FetchRankingResultsCommandExeucte()
         {
+
             FetchingResultVisibility = Visibility.Visible;
-                        
-            var getRankingByHostTask = _searchRankingAPIProxy.GetRankingResultByHost(Domain, SearchTerm);
-            var getAllRankingsTask = _searchRankingAPIProxy.GetAllRankingResults(searchTerm);
+            try
+            {
+                var getRankingByHostTask = _searchRankingAPIProxy.GetRankingResultByHost(Domain, SearchTerm);
+                var getAllRankingsTask = _searchRankingAPIProxy.GetAllRankingResults(searchTerm);
 
-            await Task.WhenAll(getRankingByHostTask, getAllRankingsTask);
+                await Task.WhenAll(getRankingByHostTask, getAllRankingsTask);
 
-            CurrentRanking = $"{Domain} current search result ranking for `{searchTerm}` is {getRankingByHostTask.Result.Ranking}";
-            AllRankings = getAllRankingsTask.Result;
-
-            FetchingResultVisibility = Visibility.Collapsed;
+                CurrentRanking = $"{Domain} current search result ranking for `{searchTerm}` is {getRankingByHostTask.Result.Ranking}";
+                AllRankings = getAllRankingsTask.Result;
+            }
+            catch(Exception ex)
+            {
+                Log.Logger.Error(ex.Message);
+                MessageBox.Show($"Unexpected error occured when calling API: {ex.Message}");
+            }
+            finally
+            {
+                FetchingResultVisibility = Visibility.Collapsed;
+            }            
         }
 
         private bool FetchRankingResultsCommandCanExeucte()
         {
-            if(string.IsNullOrWhiteSpace(SearchTerm) || string.IsNullOrWhiteSpace(Domain))
-            {
-                return false;
-            }
-            else
-            {
-                return true;
-            }
+            return (string.IsNullOrWhiteSpace(SearchTerm) || string.IsNullOrWhiteSpace(Domain) ? false : true);            
         }
     }
 }
