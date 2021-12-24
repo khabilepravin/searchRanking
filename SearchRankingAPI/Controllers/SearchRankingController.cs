@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using Models;
 using SearchRankingProcessor;
 using System.Threading.Tasks;
 using System.Linq;
+using Microsoft.Extensions.Logging;
 
 namespace SearchRankingAPI.Controllers
 {
@@ -20,16 +20,19 @@ namespace SearchRankingAPI.Controllers
             _searchRankingService = searchRankingService;
         }
 
-        [HttpGet]
+        [HttpGet]        
         public async Task<ActionResult<SearchRankingResult>> Get([FromQuery]string host, [FromQuery] string searchTerm)
         {
             if (string.IsNullOrWhiteSpace(searchTerm)) { return BadRequest("Invalid searchTerm"); }
             if (string.IsNullOrWhiteSpace(host)) { return BadRequest("Invalid host"); }
 
-
             var result = await _searchRankingService.GetSearchRanking(host, searchTerm);
 
-            if (result == null) { return NotFound($"No search results found for {host} with searchTerm: {searchTerm}"); }
+            if (result == null) 
+            { 
+                _logger.LogWarning("No search results found for {host} with search term {searchTerm}", host, searchTerm);
+                return NotFound($"No search results found for {host} with searchTerm: {searchTerm}"); 
+            }
 
             return Ok(result);
         }
@@ -41,7 +44,11 @@ namespace SearchRankingAPI.Controllers
 
             var result = await _searchRankingService.GetAllSearchRankingResults(searchTerm);
 
-            if (result?.Any() == false) { return NotFound($"No search results found with searchTerm: {searchTerm}"); }
+            if (result?.Any() == false) 
+            {
+                _logger.LogWarning("No search results found for searchTerm {searchTerm}", searchTerm);
+                return NotFound($"No search results found with searchTerm: {searchTerm}"); 
+            }
 
             return Ok(result);
         }
