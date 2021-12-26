@@ -1,5 +1,6 @@
 ﻿using APIProxy;
 using APIProxy.ResposeModels;
+using Flurl.Http;
 using Prism.Commands;
 using Prism.Mvvm;
 using Serilog;
@@ -10,7 +11,7 @@ using System.Windows;
 
 namespace SearchRankingApp.ViewModels
 {
-    internal class MainWindowViewModel : BindableBase
+    public class MainWindowViewModel : BindableBase
     {
         private readonly ISearchRankingAPIProxy _searchRankingAPIProxy;
 
@@ -61,11 +62,18 @@ namespace SearchRankingApp.ViewModels
             get => allRankings;
             set => SetProperty<IEnumerable<SearchRankingResult>>(ref allRankings, value);
         }
-       
+
+        private string errorMessage = null;
+        public string ErrorMessage
+        {
+            get => errorMessage;
+            set => SetProperty<string>(ref errorMessage, value);
+        }
+
         private DelegateCommand fetchRankingResultsCommand = null;
         public DelegateCommand FetchRankingResultsCommand => fetchRankingResultsCommand ?? (fetchRankingResultsCommand = new DelegateCommand(FetchRankingResultsCommandExeucte, FetchRankingResultsCommandCanExeucte));
 
-        private async void FetchRankingResultsCommandExeucte()
+        public async void FetchRankingResultsCommandExeucte()
         {
 
             FetchingResultVisibility = Visibility.Visible;
@@ -78,11 +86,25 @@ namespace SearchRankingApp.ViewModels
 
                 CurrentRanking = $"{Domain} current search result ranking for `{searchTerm}` is {getRankingByHostTask.Result.Ranking}";
                 AllRankings = getAllRankingsTask.Result;
+                ErrorMessage = null;
             }
-            catch(Exception ex)
+            catch(FlurlHttpException ex)
             {
                 Log.Logger.Error(ex.Message);
-                MessageBox.Show($"Unexpected error occured when calling API: {ex.Message}");
+                if(ex.StatusCode == 404)
+                {
+                    ErrorMessage = null;
+                    CurrentRanking = $"{Domain} is not one of the top 100 results for search term: {SearchTerm}";
+                    AllRankings = null;
+                }
+                else
+                {
+                    HandleErrorState(ex);
+                }
+            }
+            catch (Exception ex)
+            {
+                HandleErrorState(ex);
             }
             finally
             {
@@ -93,6 +115,14 @@ namespace SearchRankingApp.ViewModels
         private bool FetchRankingResultsCommandCanExeucte()
         {
             return (string.IsNullOrWhiteSpace(SearchTerm) || string.IsNullOrWhiteSpace(Domain) ? false : true);            
+        }
+
+        private void HandleErrorState(Exception ex)
+        {
+            Log.Logger.Error(ex.Message);
+            ErrorMessage = $"Unexpected error occured when calling API: {ex.Message}";
+            CurrentRanking = null;
+            AllRankings = null;
         }
     }
 }

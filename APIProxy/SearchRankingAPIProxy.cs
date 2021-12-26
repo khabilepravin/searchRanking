@@ -26,7 +26,7 @@ namespace APIProxy
         }
 
         public async Task<SearchRankingResult> GetRankingResultByHost(string host, string searchTerm)
-        {
+        {            
             var result = await $"{_apiBaseUrl}/searchranking"
                            .SetQueryParams(new { host = host, searchTerm = searchTerm })
                            .GetJsonAsync<SearchRankingResult>();
