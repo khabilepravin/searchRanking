@@ -23,18 +23,18 @@ namespace APIProxy
             return await Policy
                 .Handle<FlurlHttpException>(IsWorthRetrying)
                 .WaitAndRetryAsync(ExponentialBackoff())
-                .ExecuteAsync(() => $"{_apiBaseUrl}/searchranking/all"
+                .ExecuteAsync(() => $"{_apiBaseUrl}/GetAllSearchRankings"
                     .SetQueryParam("searchTerm", searchTerm)
                     .GetJsonAsync<IEnumerable<SearchRankingResult>>());
         }
 
-        public async Task<SearchRankingResult> GetRankingResultByHost(string host, string searchTerm)
+        public async Task<SearchRankingResult> GetRankingResultByHost(string domain, string searchTerm)
         {
             return await Policy
                 .Handle<FlurlHttpException>(IsWorthRetrying)
                 .WaitAndRetryAsync(ExponentialBackoff())
-                .ExecuteAsync(() => $"{_apiBaseUrl}/searchranking"
-                    .SetQueryParams(new { host = host, searchTerm = searchTerm })
+                .ExecuteAsync(() => $"{_apiBaseUrl}/GetSearchRankingByDomain"
+                    .SetQueryParams(new { domain = domain, searchTerm = searchTerm })
                     .GetJsonAsync<SearchRankingResult>());
         }
 

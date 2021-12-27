@@ -10,7 +10,7 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <Button Style="{StaticResource MaterialDesignFloatingActionMiniSecondaryButton}" Content="{Binding Ranking}"/>
-                    <TextBlock Text="{Binding Host}" Grid.Column="1" Margin="20,0,0,0" FontSize="20" VerticalAlignment="Center"/>
+                    <TextBlock Text="{Binding Domain}" Grid.Column="1" Margin="20,0,0,0" FontSize="20" VerticalAlignment="Center"/>
                 </Grid>
             </DataTemplate>
         </ListView.ItemTemplate>

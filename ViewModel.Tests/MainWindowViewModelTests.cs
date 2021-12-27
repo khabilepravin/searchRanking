@@ -18,13 +18,13 @@ namespace ViewModel.Tests
             var searchRankingAPIMock = new Mock<ISearchRankingAPIProxy>();
             searchRankingAPIMock.Setup(c => c.GetAllRankingResults(It.IsAny<string>()))
                 .ReturnsAsync(new List<SearchRankingResult> { 
-                    new SearchRankingResult { Host = "leap", Ranking = 0 }, 
-                    new SearchRankingResult { Host = "smokeball", Ranking = 1 },
-                    new SearchRankingResult { Host = "practiceevolve", Ranking = 2 }
+                    new SearchRankingResult { Domain = "leap", Ranking = 0 }, 
+                    new SearchRankingResult { Domain = "smokeball", Ranking = 1 },
+                    new SearchRankingResult { Domain = "practiceevolve", Ranking = 2 }
                 });
 
             searchRankingAPIMock.Setup(s => s.GetRankingResultByHost(It.IsAny<string>(), It.IsAny<string>()))
-                .ReturnsAsync(new SearchRankingResult { Host = "smokeball", Ranking = 1 });
+                .ReturnsAsync(new SearchRankingResult { Domain = "smokeball", Ranking = 1 });
 
             var mainWindowViewModel = new MainWindowViewModel(searchRankingAPIMock.Object) {  Domain = "smokeball", SearchTerm="conveyancing software "};
 

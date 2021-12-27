@@ -11,7 +11,7 @@ using SearchRankingAPI.Diagnostics;
 namespace SearchRankingAPI.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api")]
     public class SearchRankingController : ControllerBase
     {   
         private readonly ILogger<SearchRankingController> _logger;
@@ -23,7 +23,7 @@ namespace SearchRankingAPI.Controllers
             _searchRankingService = searchRankingService;
         }
 
-        [HttpGet]     
+        [HttpGet("GetSearchRankingByDomain")]     
         [ProducesResponseType(StatusCodes.Status200OK, Type =typeof(SearchRankingResult))]
         [ProducesResponseType(StatusCodes.Status404NotFound,Type = typeof(string))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(string))]
@@ -44,7 +44,7 @@ namespace SearchRankingAPI.Controllers
             return Ok(result);
         }
 
-        [HttpGet("all")]
+        [HttpGet("GetAllSearchRankings")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<SearchRankingResult>))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(string))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(string))]

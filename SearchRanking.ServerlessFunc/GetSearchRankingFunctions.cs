@@ -19,8 +19,8 @@ namespace SearchRanking.ServerlessFunc
             _searchRankingService = searchRankingService;
         }
 
-        [FunctionName("GetSearchRankingFunc")]
-        public async Task<IActionResult> GetSearchRankingFunc(
+        [FunctionName("GetSearchRankingByDomain")]
+        public async Task<IActionResult> GetSearchRankingByDomain(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)] HttpRequest req,
             ILogger log)
         {
@@ -48,8 +48,8 @@ namespace SearchRanking.ServerlessFunc
             return new OkObjectResult(result);
         }
 
-        [FunctionName("GetAllSearchRanking")]
-        public async Task<IActionResult> GetAllSearchRanking(
+        [FunctionName("GetAllSearchRankings")]
+        public async Task<IActionResult> GetAllSearchRankings(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)] HttpRequest req,
             ILogger log)
         {
