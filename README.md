@@ -1,4 +1,4 @@
-# Setting Solution
+## Configure Solution
 
 1. Set `SearchRankingApi` as startup project, run without debugging
 2. Copy the base url
