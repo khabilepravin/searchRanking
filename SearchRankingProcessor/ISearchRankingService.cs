@@ -6,7 +6,7 @@ namespace SearchRankingProcessor
 {
     public interface ISearchRankingService
     {
-        Task<SearchRankingResult> GetSearchRanking(string host, string searchTerm);
+        Task<SearchRankingResult> GetSearchRanking(string domain, string searchTerm);
 
         Task<IEnumerable<SearchRankingResult>> GetAllSearchRankingResults(string searchTerm);
     }

@@ -28,17 +28,17 @@ namespace SearchRankingAPI.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound,Type = typeof(string))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(string))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorDetails))]
-        public async Task<ActionResult<SearchRankingResult>> Get([FromQuery]string host, [FromQuery] string searchTerm)
+        public async Task<ActionResult<SearchRankingResult>> Get([FromQuery]string domain, [FromQuery] string searchTerm)
         {
             if (string.IsNullOrWhiteSpace(searchTerm)) { return BadRequest("Invalid searchTerm"); }
-            if (string.IsNullOrWhiteSpace(host)) { return BadRequest("Invalid host"); }
+            if (string.IsNullOrWhiteSpace(domain)) { return BadRequest("Invalid domain"); }
 
-            var result = await _searchRankingService.GetSearchRanking(host, searchTerm);
+            var result = await _searchRankingService.GetSearchRanking(domain, searchTerm);
 
             if (result == null) 
             { 
-                _logger.LogWarning($"No search results found for {host} with search term {searchTerm}");
-                return NotFound($"No search results found for {host} with searchTerm: {searchTerm}"); 
+                _logger.LogWarning($"No search results found for {domain} with search term {searchTerm}");
+                return NotFound($"No search results found for {domain} with searchTerm: {searchTerm}"); 
             }
                        
             return Ok(result);

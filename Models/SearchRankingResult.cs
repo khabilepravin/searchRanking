@@ -1,8 +1,8 @@
 ﻿namespace Models
 {
-    public record SearchRankingResult
+    public class SearchRankingResult
     {
         public int Ranking { get; set; }
-        public string Host { get; set; }
+        public string Domain { get; set; }
     }
 }

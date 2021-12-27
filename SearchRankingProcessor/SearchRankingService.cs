@@ -18,9 +18,9 @@ namespace SearchRankingProcessor
             _htmlProcessor = htmlProcessor;
         }
 
-        public async Task<SearchRankingResult> GetSearchRanking(string host, string searchTerm)
+        public async Task<SearchRankingResult> GetSearchRanking(string domain, string searchTerm)
         {
-            if (string.IsNullOrWhiteSpace(host)) { throw new ArgumentException("Invalid host"); }
+            if (string.IsNullOrWhiteSpace(domain)) { throw new ArgumentException("Invalid host"); }
             if (string.IsNullOrWhiteSpace(searchTerm)) { throw new ArgumentException("Invalid searchTerm"); }
 
             var searchResult = await _searchService.Search(searchTerm);
@@ -30,7 +30,7 @@ namespace SearchRankingProcessor
             var rankings = BuildRankings(searchResultUris);
 
             return (from rank in rankings
-                    where rank.Host.IndexOf(host, StringComparison.InvariantCultureIgnoreCase) >= 0
+                    where rank.Domain.IndexOf(domain, StringComparison.InvariantCultureIgnoreCase) >= 0
                     select rank).FirstOrDefault<SearchRankingResult>();
         }
 
@@ -51,7 +51,7 @@ namespace SearchRankingProcessor
                 return from url in searchResultUrls
                        select new SearchRankingResult
                        {
-                           Host = url.Host,
+                           Domain = url.Host,
                            Ranking = searchResultUrls.IndexOf(url)
                        };
             }
