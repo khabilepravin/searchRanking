@@ -3,16 +3,12 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.OpenApi.Models;
-using SearchRankingProcessor;
-using System;
-using Polly;
-using System.Net.Http;
-using Polly.Extensions.Http;
-using SearchRankingHtmlProcessor;
 using Microsoft.Extensions.Options;
+using Microsoft.OpenApi.Models;
 using Models;
 using SearchRankingAPI.Diagnostics;
+using SearchRankingHtmlProcessor;
+using SearchRankingProcessor;
 using Serilog;
 
 namespace SearchRankingAPI
@@ -33,6 +29,7 @@ namespace SearchRankingAPI
             services.Configure<SearchSettings>(Configuration.GetSection("SearchSettings"))
                 .AddSingleton<SearchSettings>(searchSetting => searchSetting.GetRequiredService<IOptions<SearchSettings>>().Value);
 
+            services.AddSingleton(Log.Logger);
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
@@ -42,10 +39,6 @@ namespace SearchRankingAPI
             services.AddSingleton<ISearchRankingService, SearchRankingService>();
             services.AddSingleton<ISearchService, SearchService>();
             services.AddSingleton<IHtmlProcessor, HtmlProcessor>();
-
-            //services.AddHttpClient<ISearchService, SearchService>()
-            // .SetHandlerLifetime(TimeSpan.FromMinutes(5))
-            // .AddPolicyHandler(GetRetryPolicy());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -69,15 +62,6 @@ namespace SearchRankingAPI
             {
                 endpoints.MapControllers();
             });
-        }
-
-        static IAsyncPolicy<HttpResponseMessage> GetRetryPolicy()
-        {
-            return HttpPolicyExtensions
-                .HandleTransientHttpError()
-                .OrResult(msg => msg.StatusCode == System.Net.HttpStatusCode.NotFound)
-                .WaitAndRetryAsync(4, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2,
-                                                                            retryAttempt)));
         }
     }
 }

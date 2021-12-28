@@ -13,7 +13,7 @@ namespace SearchRankingAPI.IntegrationTests
             var client = new TestClientProvider().Client;
 
             // act
-            var response = await client.GetAsync("/api/searchranking?domain=smokeball&searchTerm=conveyancing software");
+            var response = await client.GetAsync("/api/getsearchrankingbydomain?domain=smokeball&searchTerm=conveyancing software");
 
             // assert   
             response.StatusCode.Should().Be(HttpStatusCode.OK);
@@ -26,7 +26,7 @@ namespace SearchRankingAPI.IntegrationTests
             var client = new TestClientProvider().Client;
 
             // act
-            var response = await client.GetAsync("/api/searchranking?domain=&searchTerm=conveyancing software");
+            var response = await client.GetAsync("/api/getsearchrankingbydomain?domain=&searchTerm=conveyancing software");
 
             // assert          
             response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
@@ -39,7 +39,7 @@ namespace SearchRankingAPI.IntegrationTests
             var client = new TestClientProvider().Client;
 
             // act
-            var response = await client.GetAsync("/api/searchranking?domain=smokeball&searchTerm=");
+            var response = await client.GetAsync("/api/getsearchrankingbydomain?domain=smokeball&searchTerm=");
 
             // assert          
             response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
@@ -52,7 +52,7 @@ namespace SearchRankingAPI.IntegrationTests
             var client = new TestClientProvider().Client;
 
             // act
-            var response = await client.GetAsync("/api/searchranking?domain=smokeball&searchTerm=fargo");
+            var response = await client.GetAsync("/api/getsearchrankingbydomain?domain=smokeball&searchTerm=fargo");
 
             // assert          
             response.StatusCode.Should().Be(HttpStatusCode.NotFound);
@@ -65,7 +65,7 @@ namespace SearchRankingAPI.IntegrationTests
             var client = new TestClientProvider().Client;
 
             // act
-            var response = await client.GetAsync("/api/searchranking/all?searchTerm=conveyancing software");
+            var response = await client.GetAsync("/api/getallsearchrankings?searchTerm=conveyancing software");
 
             // assert   
             response.StatusCode.Should().Be(HttpStatusCode.OK);
@@ -80,7 +80,7 @@ namespace SearchRankingAPI.IntegrationTests
             var client = new TestClientProvider().Client;
 
             // act
-            var response = await client.GetAsync("/api/searchranking/all?searchTerm=");
+            var response = await client.GetAsync("/api/getallsearchrankings?searchTerm=");
 
             // assert          
             response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
