@@ -10,9 +10,7 @@ using SearchRankingAPI.Diagnostics;
 
 namespace SearchRankingAPI.Controllers
 {
-    [ApiController]
-    [Route("api")]
-    public class SearchRankingController : ControllerBase
+    public class SearchRankingController : BaseController
     {   
         private readonly ILogger<SearchRankingController> _logger;
         private readonly ISearchRankingService _searchRankingService;
