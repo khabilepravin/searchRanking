@@ -123,6 +123,6 @@ namespace SearchRankingApp.ViewModels
             ErrorMessage = $"Unexpected error occured when calling API: {ex.Message}";
             CurrentRanking = null;
             AllRankings = null;
-        }
+        }       
     }
 }

@@ -9,8 +9,8 @@
         TextOptions.TextFormattingMode="Ideal" 
         TextOptions.TextRenderingMode="Auto"        
         Background="{DynamicResource MaterialDesignPaper}"
-        FontFamily="{DynamicResource MaterialDesignFont}"
-        Title="Search Ranking App" Height="450" Width="800" WindowState="Maximized">
+        FontFamily="{DynamicResource MaterialDesignFont}"        
+        Title="Search Ranking App" WindowState="Maximized">
     <DockPanel>
         <materialDesign:ColorZone
                     Padding="16" Grid.Row="0"

@@ -1,17 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace SearchRankingApp.Views.UserControls
 {
@@ -23,6 +11,17 @@ namespace SearchRankingApp.Views.UserControls
         public RankingListUserControl()
         {
             InitializeComponent();
+        }
+
+        public static readonly DependencyProperty SearchedDomainProperty = DependencyProperty.Register(
+            "SearchedDomain", typeof(string),
+            typeof(MainWindow)
+            );
+
+        public string SearchedDomain
+        {
+            get => (string)GetValue(SearchedDomainProperty);
+            set => SetValue(SearchedDomainProperty, value);
         }
     }
 }

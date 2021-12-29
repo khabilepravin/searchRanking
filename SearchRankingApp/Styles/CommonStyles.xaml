@@ -9,4 +9,5 @@
         <Setter Property="FontSize" Value="18"/>
         <Setter Property="Foreground" Value="Red"/>
     </Style>
+    <SolidColorBrush x:Key="HighlightBrush" Color="Red"/>
 </ResourceDictionary>

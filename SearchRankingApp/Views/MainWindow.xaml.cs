@@ -1,17 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace SearchRankingApp.Views
 {
@@ -22,7 +11,9 @@ namespace SearchRankingApp.Views
     {
         public MainWindow()
         {
-            InitializeComponent();            
+            InitializeComponent();
+            Uri iconUri = new Uri("pack://application:,,,/search_flat_icon.ico", UriKind.RelativeOrAbsolute);
+            this.Icon = BitmapFrame.Create(iconUri);
         }
     }
 }

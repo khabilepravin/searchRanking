@@ -43,6 +43,7 @@ namespace SearchRankingHtmlProcessor
 
                 if (urlSearchResultInstance.Contains(TagNames.ImgTag) == false)
                 {
+                    // little xml logic to make attributes reading easier
                     var doc = new XmlDocument();
                     doc.LoadXml(urlSearchResultInstance);
 
